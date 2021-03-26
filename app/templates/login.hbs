@@ -1,0 +1,40 @@
+{{page-title "Login"}}
+
+<div class="flex flex-col items-center">
+    <div class="container px-4 mx-auto w-full">
+        {{#unless this.isLoggedIn}}
+        <div class="pt-10 pb-5">
+            <h1 class="text-4xl font-bold text-green-700">
+                Log in
+            </h1>
+        </div>
+
+        <div class="grid grid-cols-2 pb-5">
+            <div class="col-span-1 pr-10">
+                <p class="text-xl text-green-800 pb-1">
+                    Username
+                </p>
+                <input type="text" placeholder="username"
+                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.username}}
+                    {{on "input" this.updateUsername}}>
+            </div>
+            <div class="col-span-1 pr-10">
+                <p class="text-xl text-green-800 pb-1">
+                    Password
+                </p>
+                <input type="password" placeholder="password"
+                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.password}}
+                    {{on "input" this.updatePassword}}>
+            </div>
+        </div>
+
+        <div class="">
+            <button role="button"
+                class="p-2 lg:px-4 md:mx-2 text-green-700 text-centerborder border border-solid border-green-700 rounded hover:bg-green-700 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1"
+                {{ on "click" this.login }}>
+                Submit
+            </button>
+        </div>
+        {{/unless}}
+    </div>
+</div>

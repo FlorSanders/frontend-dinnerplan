@@ -1,41 +1,31 @@
 {{page-title "Dinnerplan"}}
 
-<div class="header">
-    <nav class="bg-white py-2 md:py-4">
-        <div class="container px-4 mx-auto md:flex md:items-center">
-            <div class="flex justify-between items-center">
-                <a href="#" class="font-bold text-xl text-green-700">DinnerPlan</a>
-                <button
-                    class="border border-solid border-gray-700 px-3 py-1 rounded text-gray-700 opacity-50 hover:opacity-75 md:hidden"
-                    id="navabr-toggle">
-                    <FaIcon @icon="bars" />
-                </button>
+<div class="min-h-screen">
+    <div class="header">
+        <nav class="bg-white py-3 md:py-4 h-20">
+            <div class="container px-4 mx-auto md:flex md:items-center">
+                <div class="flex justify-between items-center">
+                    <LinkTo @route="home" class="font-bold text-xl text-green-700">DinnerPlan</LinkTo>
+                    <button
+                        class="border border-solid border-gray-700 px-3 py-1 rounded text-gray-700 opacity-50 hover:opacity-75 md:hidden"
+                        id="navabr-toggle">
+                        <FaIcon @icon="bars" />
+                    </button>
+                </div>
+
+                <div class="hidden md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0" id="navbar-collapse">
+                    <LinkTo @route="login"
+                        class="p-2 lg:px-4 md:mx-2 text-green-700 text-centerborder border border-transparent rounded hover:bg-green-100 transition-colors duration-300 mt-1 md:mt-0 md:ml-1">
+                        Log In
+                    </LinkTo>
+                    <LinkTo @route="signup"
+                        class="p-2 lg:px-4 md:mx-2 text-green-700 text-centerborder border border-solid border-green-700 rounded hover:bg-green-700 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1">
+                        Sign Up
+                    </LinkTo>
+                </div>
             </div>
-
-            <div class="hidden md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0" id="navbar-collapse">
-                <a href="#"
-                    class="p-2 lg:px-4 md:mx-2 text-green-700 text-centerborder border border-transparent rounded hover:bg-green-100 transition-colors duration-300 mt-1 md:mt-0 md:ml-1">
-                    Log In
-                </a>
-                <a href="#"
-                    class="p-2 lg:px-4 md:mx-2 text-green-700 text-centerborder border border-solid border-green-700 rounded hover:bg-green-700 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1">
-                    Sign Up
-                </a>
-            </div>
-        </div>
-    </nav>
-</div>
-
-<div class="bg-green-100 py-6 md:py-12">
-    <div class="cotainer px-4 mx-auto">
-        <div class="text-center max-w-2xl mx-auto">
-            <h1 class="text-3xl md:text-4xl font-bold mb-2">
-                Welcome to DinnerPlan!
-            </h1>
-            <span class="text-xl md:text-2xl mb-2">A new home for your recipes.</span>
-        </div>
-
+        </nav>
     </div>
-</div>
 
-{{outlet}}
+    {{outlet}}
+</div>
