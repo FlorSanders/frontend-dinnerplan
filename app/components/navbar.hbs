@@ -1,0 +1,44 @@
+<div class="header">
+    <nav class="bg-white py-3 py-4 h-20">
+        <div class="container px-4 mx-auto flex items-center">
+            <div class="flex justify-between items-center">
+                <LinkTo @route={{if this.loggedIn "recipes" "home" }} class="font-bold text-xl text-green-700">
+                    DinnerPlan
+                </LinkTo>
+                {{!-- <button
+                    class="border border-solid border-gray-700 px-3 py-1 rounded text-gray-700 opacity-50 hover:opacity-75 md:hidden"
+                    id="navabr-toggle">
+                    <FaIcon @icon="bars" />
+                </button> --}}
+            </div>
+            {{#if this.loggedIn}}
+            <div class="flex flex-row ml-auto mt-0" id="navbar-collapse">
+                <button role="button"
+                    class="text-green-800 w-10 h-10 border border-solid border-green-800 rounded-full hover:bg-green-800 hover:text-white transition-colors duration-300"
+                    {{ on "click" this.toggleMenu }}>
+                    {{this.avatar}}
+                </button>
+                <div class="{{if this.menuOpen "" " hidden"}} absolute right-0 top-20 z-20 bg-white flex flex-col
+                    align-center px-24">
+                    <LinkTo @route="account" class="text-green-800">
+                        Account
+                    </LinkTo>
+                    <button class="text-green-800 hover:text-green-700" {{on "click" this.logout }}>
+                        Log out
+                    </button>
+                </div>
+            </div>
+
+            {{else}}
+            <div class="flex flex-row ml-auto mt-0" id="navbar-collapse">
+                <Button @link={{true}} @route="login">
+                    Log in
+                </Button>
+                <BorderButton @link={{true}} @route="signup">
+                    Sign up
+                </BorderButton>
+            </div>
+            {{/if}}
+        </div>
+    </nav>
+</div>
