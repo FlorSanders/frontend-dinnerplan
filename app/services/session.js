@@ -96,7 +96,8 @@ export default class SessionService extends Service {
     }
 
     // Log in at the backend
-    async login(username, password) {
+    async login({username, password}) {
+        console.log(username, password)
         // If we're logged in, return
         await this.refresh();
         if(this.loggedIn) return;
@@ -139,7 +140,7 @@ export default class SessionService extends Service {
                     'Content-Type': 'application/vnd.api+json',
                 },
             });
-            if (response.ok) this.reset;
+            if (response.ok) this.reset();
             return response.ok;
         } else {
             // Already logged out somehow, just reset the session

@@ -10,4 +10,6 @@ Router.map(function () {
   this.route('login');
   this.route('home', { path: '/' });
   this.route('signup');
+  this.route('recipes');
+  this.route('account');
 });
