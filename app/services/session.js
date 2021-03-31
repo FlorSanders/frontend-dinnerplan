@@ -69,6 +69,31 @@ export default class SessionService extends Service {
         }
     }
 
+    // Register 
+    async register({name, nickname, password, confirmPassword}) {
+        console.log(name, nickname, password, confirmPassword)
+        // Log in to 
+        let url = '/register';
+        let payload = {
+            data: {
+                type: 'accounts',
+                attributes: {
+                    name,
+                    nickname,
+                    password,
+                    'password-confirmation': confirmPassword,
+                },
+            },
+        };
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/vnd.api+json',
+            },
+            body: JSON.stringify(payload),
+        });
+        return response.ok;
+    }
 
     // Log in at the backend
     async login(username, password) {
@@ -95,9 +120,9 @@ export default class SessionService extends Service {
         });
         if(response.ok) {
             this.refresh()
+            return true;
         } else {
-            console.warn("Unable to log in")
-            alert("Please enter valid login details, or register.")
+            return false;
         }
     }
     
@@ -114,15 +139,12 @@ export default class SessionService extends Service {
                     'Content-Type': 'application/vnd.api+json',
                 },
             });
-            if(response.ok) {
-                this.reset();
-            } else {
-                console.error("Unable to log out");
-                alert("Unable to log out");
-            }
+            if (response.ok) this.reset;
+            return response.ok;
         } else {
             // Already logged out somehow, just reset the session
             this.reset()
+            return false;
         }
     }
 

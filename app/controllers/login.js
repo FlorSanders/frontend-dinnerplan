@@ -23,11 +23,25 @@ export default class LoginController extends Controller {
         this.password = e.target.value;
     }
 
-    @action login(){
-        this.session.login(this.username, this.password);
+    @action 
+    async login(){
+        let result = await this.session.login(this.username, this.password);
+        if(result){
+            console.log(`Login result ${result}`);
+        } else {
+            console.warn("Unable to log in");
+            alert("Please enter valid login details, or register.")
+        }
     }
 
-    @action logout(){
-        this.session.logout();
+    @action 
+    async logout(){
+        let result = await this.session.logout();
+        if(result){
+            console.log(`Logout result ${result}`);
+        } else {
+            console.error("Unable to log out");
+            alert("Unable to log out");
+        }
     }
 }
