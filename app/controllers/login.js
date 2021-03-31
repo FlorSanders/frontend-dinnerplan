@@ -9,8 +9,8 @@ export default class LoginController extends Controller {
     @tracked password = '';
 
     get isLoggedIn(){
-        let id = this.session.session.id;
-        return !!id;
+        this.session.refresh();
+        return this.session.loggedIn;
     }
 
     @action
@@ -24,7 +24,10 @@ export default class LoginController extends Controller {
     }
 
     @action login(){
-        console.log(`Log in using ${this.username} and ${this.password}`);
         this.session.login(this.username, this.password);
+    }
+
+    @action logout(){
+        this.session.logout();
     }
 }
