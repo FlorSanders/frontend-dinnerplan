@@ -1,0 +1,5 @@
+{{#each @model as |recipe| }}
+<LinkTo @route="recipes.recipe" @model={{recipe.slug}}>
+    {{recipe.title}}
+</LinkTo>
+{{/each}}

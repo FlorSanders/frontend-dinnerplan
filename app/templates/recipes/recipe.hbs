@@ -1,0 +1,39 @@
+<h1 class="text-3xl text-gray-700">
+    {{@model.recipe.title}}
+</h1>
+<span class="text-xl text-italic text-gray-500">
+    {{@model.recipe.description}}
+</span>
+<p class="text-sm text-gray-400">
+    Cuisine: {{@model.recipe.cuisine}}
+</p>
+<p class="text-sm text-gray-400">
+    Duration: {{@model.recipe.duration.hours}} hours {{@model.recipe.duration.minutes}} minutes
+</p>
+<p class="text-sm text-gray-400">
+    Category: {{@model.recipe.category}}
+</p>
+<p class="text-sm text-gray-400">
+    Yield: {{@model.recipe.yield}}
+</p>
+<p class="text-sm text-gray-400">
+    Diet: {{@model.recipe.diet}}
+</p>
+
+<h3 class="text-xl text-green-700 pt-5">
+    Ingredients
+</h3>
+<ul>
+    <li>
+        {{@model.recipe.ingredient}}
+    </li>
+</ul>
+
+<h3 class="text-xl text-green-700 pt-5">
+    Instructions
+</h3>
+<ul>
+    <li>
+        {{@model.instructions.step}}
+    </li>
+</ul>

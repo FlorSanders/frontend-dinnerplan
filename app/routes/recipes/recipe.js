@@ -13,14 +13,12 @@ export default class RecipesRoute extends Route {
         }
     }
 
-    async model() {
-        let id = this.session.userId;
-        let user = await this.store.findRecord('user', id);
-        let recipes = await user.recipes;
-        return recipes.map((recipe) => ({
-            title: recipe.title,
-            slug: dasherize(recipe.title),
-            id: recipe.id,
-        }));
+    async model(arg) {
+        let slug = arg.id;
+        let recipes = this.modelFor('recipes');
+        let recipeId = recipes.filter((recipe) => (recipe.slug === slug))[0].id;
+        let recipe = await this.store.findRecord('recipe', recipeId);
+        let instructions = await recipe.instructions;
+        return {recipe, instructions};
     }
 }

@@ -1,15 +1,18 @@
-import Service from '@ember/service';
+import Service, {inject as service} from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import fetch from 'fetch';
 
 export default class SessionService extends Service {
     @tracked name = '';
     @tracked nickname = '';
-    @tracked id = '';
+    @tracked accountId = '';
+    @tracked userId = '';
     @tracked loggedIn = false;
+    @service store;
 
     // Refresh the session
     async refresh() {
+        // console.log(users)
         let id = '';
         let url = '/sessions/current';
         let response = await fetch(url, {
@@ -21,7 +24,8 @@ export default class SessionService extends Service {
             let data = await response.json();
             id = data.relationships.account.data.id || '';
         }
-        if(this.id !== id) this.updateSession(id);
+        if(this.accountId !== id) await this.updateSession(id);
+        return this.loggedIn;
     }
 
     // Session changed --> update variables
@@ -49,10 +53,12 @@ export default class SessionService extends Service {
                 if(ownerResponse.ok) {
                     let ownerData = await ownerResponse.json();
                     let name = ownerData.data.attributes.name;
+                    let userId = ownerData.data.id;
                     // Update the session information
                     this.name = name;
                     this.nickname = nickname;
-                    this.id = id;
+                    this.accountId = id;
+                    this.userId = userId;
                     this.loggedIn = true;
                 } else {
                     console.error("Unable to fetch user info");
@@ -144,7 +150,7 @@ export default class SessionService extends Service {
             return response.ok;
         } else {
             // Already logged out somehow, just reset the session
-            this.reset()
+            this.reset();
             return false;
         }
     }
@@ -153,7 +159,8 @@ export default class SessionService extends Service {
     reset() {
         this.name = '';
         this.nickname = '';
-        this.id = '';
+        this.accountId = '';
+        this.userId = '';
         this.loggedIn = false;
     }
 }
