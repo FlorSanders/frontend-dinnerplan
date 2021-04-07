@@ -12,6 +12,7 @@ Router.map(function () {
   this.route('signup');
   this.route('recipes', function () {
     this.route('recipe', { path: '/:id' });
+    this.route('new');
   });
   this.route('account');
 });

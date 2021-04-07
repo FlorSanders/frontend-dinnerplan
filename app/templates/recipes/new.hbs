@@ -1,0 +1,134 @@
+{{page-title "New recipe"}}
+
+<div class="flex flex-col items-center">
+    <div class="container px-4 mx-auto w-full">
+        <div class="pt-10 pb-5">
+            <h1 class="text-4xl font-bold text-green-700">
+                New recipe
+            </h1>
+        </div>
+
+        <div class="pb-5">
+            <p class="text-xl text-green-800 pb-1">
+                Title
+            </p>
+            <input type="text" placeholder="title"
+                class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.recipeTitle}}
+                {{on "input" this.updateRecipeTitle}}>
+        </div>
+
+        <div class="pb-5">
+            <p class="text-xl text-green-800 pb-1">
+                Description
+            </p>
+            <textarea placeholder="description" rows="3" cols="50"
+                class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.recipeTitle}}
+                {{on "input" this.updateRecipeTitle}} />
+        </div>
+
+        <div class="grid grid-cols-2 pb-5">
+            <div class="col-span-1 pr-10">
+                <p class="text-xl text-green-800 pb-1">
+                    Category
+                </p>
+                <input type="text" placeholder="category"
+                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.recipeCatogory}}
+                    {{on "input" this.updateRecipeCategory}}>
+            </div>
+            <div class="col-span-1 pr-10">
+                <p class="text-xl text-green-800 pb-1">
+                    Cuisine
+                </p>
+                <input type="text" placeholder="cuisine"
+                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.recipeCuisine}}
+                    {{on "input" this.updateRecipeCuisine}}>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 pb-5">
+            <div class="col-span-1 pr-10">
+                <p class="text-xl text-green-800 pb-1">
+                    Duration
+                </p>
+                <input type="text" placeholder="duration"
+                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.recipeDuration}}
+                    {{on "input" this.updateRecipeDuration}}>
+            </div>
+            <div class="col-span-1 pr-10">
+                <p class="text-xl text-green-800 pb-1">
+                    Yield
+                </p>
+                <input type="text" placeholder="yield"
+                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.recipeYield}}
+                    {{on "input" this.updateRecipeYield}}>
+            </div>
+        </div>
+
+        <div class="pb-5">
+            <p class="text-xl text-green-800 pb-1">
+                Diets
+            </p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 pb-5">
+                {{#each this.diets as |diet| }}
+                <div class="col-span-1 pr-10">
+                    <input type="checkbox" id={{diet.name}} value={{diet.name}} checked={{diet.checked}} {{on "click"
+                        this.updateRecipeDiet}}> {{diet.name}}
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="pb-5">
+            <p class="text-xl text-green-800 pb-1 flex flex-row align-center justify-between">
+                Ingredients
+                <BorderButton @clickFunction={{this.addRecipeIngredient}}>
+                    <FaIcon @icon="plus" />
+                </BorderButton>
+            </p>
+            {{#each this.recipeIngredients as |ingredient index| }}
+            <div class="flex flex-row align-center justify-between pb-1">
+                <input type="text" placeholder="ingredient {{index}}" key={{index}}
+                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{ingredient}}
+                    {{on "input" this.updateRecipeIngredients}}>
+                <div key={{index}}>
+                    <BorderButton @clickFunction={{this.removeRecipeIngredient }}>
+                        <FaIcon @icon="minus" />
+                    </BorderButton>
+                </div>
+
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="pb-5">
+            <p class="text-xl text-green-800 pb-1 flex flex-row align-center justify-between">
+                Instructions
+                <BorderButton @clickFunction={{this.addRecipeInstruction}}>
+                    <FaIcon @icon="plus" />
+                </BorderButton>
+            </p>
+            {{#each this.recipeInstructions as |instruction index| }}
+            <div class="flex flex-row align-center justify-between pb-1">
+                <input type="text" placeholder="step {{index}}" key={{index}}
+                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{instruction}}
+                    {{on "input" this.updateRecipeInstructions}}>
+                <div key={{index}}>
+                    <BorderButton @clickFunction={{this.removeRecipeInstruction }}>
+                        <FaIcon @icon="minus" />
+                    </BorderButton>
+                </div>
+
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="pb-20">
+            <BorderButton @clickFunction={{this.save}}>
+                Save recipe
+            </BorderButton>
+            <BorderButton @clickFunction={{this.reset}}>
+                Cancel
+            </BorderButton>
+        </div>
+    </div>
+</div>

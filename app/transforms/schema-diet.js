@@ -2,7 +2,7 @@ import Transform from '@ember-data/serializer/transform';
 
 const diets = {
   'diabetic': 'http://schema.org/DiabeticDiet',
-  'glutenfree': 'http://schema.org/GlutenFreeDiet',
+  'gluten free': 'http://schema.org/GlutenFreeDiet',
   'halal': 'http://schema.org/HalalDiet',
   'hindu': 'http://schema.org/HinduDiet',
   'kosher': 'http://schema.org/KosherDiet',

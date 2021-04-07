@@ -4,7 +4,7 @@
     {{yield}}
 </LinkTo>
 {{else}}
-<button
+<button {{on "click" @clickFunction}}
     class="p-2 lg:px-4 md:mx-2 text-green-700 text-centerborder border border-transparent rounded hover:bg-green-100 transition-colors duration-300 mt-1 md:mt-0 md:ml-1">
     {{yield}}
 </button>

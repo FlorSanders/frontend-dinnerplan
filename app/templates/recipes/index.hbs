@@ -1,5 +1,15 @@
-{{#each @model as |recipe| }}
-<LinkTo @route="recipes.recipe" @model={{recipe.slug}}>
-    {{recipe.title}}
-</LinkTo>
-{{/each}}
+<div class="block">
+    <div class="pb-5">
+        {{#each @model as |recipe| }}
+        <LinkTo @route="recipes.recipe" @model={{recipe.slug}}>
+            {{recipe.title}}
+        </LinkTo>
+        {{/each}}
+    </div>
+
+
+
+    <BorderButton @link={{true}} @route="recipes.new">
+        New recipe
+    </BorderButton>
+</div>
