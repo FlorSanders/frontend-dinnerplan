@@ -34,7 +34,6 @@ export default class SignupController extends Controller {
     @action
     async signup(){
         let {name, username, password, confirmPassword} = this;
-        console.log(`Signing up with ${name}, ${username}, ${password}, ${confirmPassword}}`)
         if(password === confirmPassword) {
             let result = await this.session.register({
                 name,

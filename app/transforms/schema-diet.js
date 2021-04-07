@@ -20,7 +20,6 @@ function getKeyForValue(object, value){
 
 export default class SchemaDietTransform extends Transform {
   deserialize(serialized) {
-    console.log(serialized)
     return getKeyForValue(diets, serialized) || null;
   }
 

@@ -13,7 +13,6 @@ export default class AccountController extends Controller {
     async logout(){
         let result = await this.session.logout();
         if(result){
-            console.log(`Logout result ${result}`);
             this.router.transitionTo('home')
         } else {
             console.error("Unable to log out");

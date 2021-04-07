@@ -11,7 +11,6 @@ export default class JsonListTransform extends Transform {
 
   serialize(deserialized) {
     let str = JSON.stringify(deserialized);
-    console.log(str);
     return str;
   }
 }

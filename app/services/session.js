@@ -77,7 +77,6 @@ export default class SessionService extends Service {
 
     // Register 
     async register({name, nickname, password, confirmPassword}) {
-        console.log(name, nickname, password, confirmPassword)
         // Log in to 
         let url = '/register';
         let payload = {
