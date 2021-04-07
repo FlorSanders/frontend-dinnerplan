@@ -6,7 +6,7 @@ export default class RecipeModel extends Model {
     @attr('iso-duration') duration;
     @attr('string') category;
     @attr('string') cuisine;
-    @attr('string') ingredient;
+    @attr('json-list') ingredient;
     @attr('string') yield;
     @attr('schema-diet') diet;
     @belongsTo('user') creator;

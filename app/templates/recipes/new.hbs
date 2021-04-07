@@ -22,8 +22,8 @@
                 Description
             </p>
             <textarea placeholder="description" rows="3" cols="50"
-                class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.recipeTitle}}
-                {{on "input" this.updateRecipeTitle}} />
+                class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.recipeDescription}}
+                {{on "input" this.updateRecipeDescription}} />
         </div>
 
         <div class="grid grid-cols-2 pb-5">
@@ -32,7 +32,7 @@
                     Category
                 </p>
                 <input type="text" placeholder="category"
-                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.recipeCatogory}}
+                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.recipeCategory}}
                     {{on "input" this.updateRecipeCategory}}>
             </div>
             <div class="col-span-1 pr-10">
@@ -50,15 +50,26 @@
                 <p class="text-xl text-green-800 pb-1">
                     Duration
                 </p>
-                <input type="text" placeholder="duration"
-                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.recipeDuration}}
-                    {{on "input" this.updateRecipeDuration}}>
+                <div class="grid grid-cols-2">
+                    <div class="col-span-1 pr-10">
+                        <input type="number" min="0" max="60" placeholder="hours"
+                            class="border-2 w-18 border-solid rounded px-4 py-2 border-gray-200"
+                            value={{this.recipeDuration.hours}} {{on "input" this.updateRecipeDurationHours}}> hours
+                    </div>
+                    <div class="col-span-1 pr-10">
+                        <input type="number" min="0" placeholder="minutes"
+                            class="border-2 w-18 border-solid rounded px-4 py-2 border-gray-200"
+                            value={{this.recipeDuration.minutes}} {{on "input" this.updateRecipeDurationMinutes}}>
+                        minutes
+                    </div>
+                </div>
+
             </div>
             <div class="col-span-1 pr-10">
                 <p class="text-xl text-green-800 pb-1">
                     Yield
                 </p>
-                <input type="text" placeholder="yield"
+                <input type="number" placeholder="yield"
                     class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.recipeYield}}
                     {{on "input" this.updateRecipeYield}}>
             </div>

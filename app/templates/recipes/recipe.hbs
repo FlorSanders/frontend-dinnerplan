@@ -24,16 +24,20 @@
     Ingredients
 </h3>
 <ul>
+    {{#each @model.recipe.ingredient as |ingredient| }}
     <li>
-        {{@model.recipe.ingredient}}
+        {{ingredient}}
     </li>
+    {{/each}}
 </ul>
 
 <h3 class="text-xl text-green-700 pt-5">
     Instructions
 </h3>
 <ul>
+    {{#each @model.instructions.step as |step| }}
     <li>
-        {{@model.instructions.step}}
+        {{step}}
     </li>
+    {{/each}}
 </ul>

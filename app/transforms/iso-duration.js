@@ -1,5 +1,5 @@
 import Transform from '@ember-data/serializer/transform';
-import {parse, end, toSeconds, pattern} from 'iso8601-duration';
+import {parse} from 'iso8601-duration';
 
 export default class IsoDurationTransform extends Transform {
   deserialize(serialized) {

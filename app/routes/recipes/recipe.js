@@ -1,8 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { dasherize } from '@ember/string';
 
-export default class RecipesRoute extends Route {
+export default class RecipeRoute extends Route {
     @service session;
     @service store;
 

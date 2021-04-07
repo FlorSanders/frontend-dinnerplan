@@ -1,17 +1,29 @@
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
 export default class RecipesNewController extends Controller {
+    // Services
+    @service store;
+    @service session;
+    @service router;
+    // Tracked variables
     @tracked recipeTitle = '';
     @tracked recipeDescription = '';
     @tracked recipeCategory = '';
     @tracked recipeCuisine = '';
-    @tracked recipeDuration = '';
+    @tracked recipeDuration = {
+        years: 0, 
+        months: 0, 
+        days: 0, 
+        hours: 0, 
+        minutes: 0, 
+        seconds: 0,
+    }
     @tracked recipeYield = '';
     @tracked recipeIngredients = ['', '', ''];
     @tracked recipeInstructions = ['', '', ''];
-
     @tracked recipeDiets = {
         'diabetic': false,
         'gluten free': false,
@@ -25,15 +37,47 @@ export default class RecipesNewController extends Controller {
         'vegan': false,
         'vegetarian': false,
     }
+    // Other variables
+    confirmedLeave = false;
+
+    constructor() {
+        super(...arguments);
+        // If the user leaves while there are unsaved changes, a warning should be given
+        this.router.on('routeWillChange', (transition) => {
+            // If we already confirmed, actually leave
+            // Only block once, otherwise leaving is impossible
+            if(this.confirmedLeave || transition.isAborted) {
+                return;
+            }
+            // Only give the warning if there's actually text in the field
+            if(!this.isReset()) {
+                let leave = window.confirm("You have unsaved changes. Are you sure?");
+                if (leave) {
+                    this.confirmedLeave = true;
+                } else {
+                    transition.abort();
+                }
+            }
+            
+        })
+    }
 
     get diets() {
-        console.log(Object.keys(this.recipeDiets))
         let diets = Object.keys(this.recipeDiets).map((diet) => ({
             name: diet,
             checked: this.recipeDiets[diet],  
         }));
-        console.log(diets)
         return diets;
+    }
+
+    isReset(){
+        let {recipeTitle, recipeDescription, recipeCategory, recipeCuisine, recipeDuration, recipeYield, recipeIngredients, recipeInstructions, recipeDiets} = this;
+        let simpleFieldsEmpty = !recipeTitle && !recipeDescription && !recipeCategory && !recipeCuisine && !recipeYield;
+        let durationEmpty = Object.values(recipeDuration).every((value) => (!value));
+        let dietsEmpty = Object.values(recipeDiets).every((value) => (!value));
+        let ingredientsEmpty = recipeIngredients.every((value) => (!value));
+        let instructionsEmpty = recipeInstructions.every((value) => (!value));
+        return simpleFieldsEmpty && durationEmpty && dietsEmpty && ingredientsEmpty && instructionsEmpty;
     }
 
     @action
@@ -53,12 +97,17 @@ export default class RecipesNewController extends Controller {
 
     @action
     updateRecipeCuisine(e) {
-        this.recipeCusine = e.target.value;
+        this.recipeCuisine = e.target.value;
     }
 
     @action
-    updateRecipeDuration(e) {
-        this.recipeDuration = e.target.value;
+    updateRecipeDurationHours(e) {
+        this.recipeDuration.hours = e.target.value;
+    }
+
+    @action
+    updateRecipeDurationMinutes(e) {
+        this.recipeDuration.minutes = e.target.value;
     }
 
     @action
@@ -142,8 +191,37 @@ export default class RecipesNewController extends Controller {
     }
 
     @action
-    save() {
-        console.log("Submitting recipe")
+    async save() {
+        if(this.isReset() || !this.recipeTitle) {
+            window.alert("Please fill in all the fields")
+            return;
+        }
+        // Create the instruction object
+        let instructionsArray = [...this.recipeInstructions].filter((instruction) => (instruction !== '')).map((instruction, index) => (`${index}. ${instruction}`))
+        let instructions = this.store.createRecord('instruction', {
+            step: instructionsArray,
+        });
+        // Find the current user = creator of the recipe
+        let user = this.store.peekRecord('user', this.session.userId);
+        // Create the recipe object
+        let ingredientsArray = [...this.recipeIngredients].filter((ingredient) => (ingredient !== ''));
+        let checkedDiets = Object.keys(this.recipeDiets).filter((diet) => (this.recipeDiets[diet]));
+        let diet = (!!checkedDiets.length) ? checkedDiets[0] : null;    // Unfortunately we can atm only add 1 diet as it is a property
+        let recipe = this.store.createRecord('recipe', {
+            title: this.recipeTitle,
+            description: this.recipeDescription,
+            duration: this.recipeDuration,
+            category: this.recipeCategory,
+            cuisine: this.recipeCategory,
+            ingredient: ingredientsArray,
+            yield: this.recipeYield,
+            diet: diet,
+            creator: user,
+            instructions: instructions,
+        });
+        await instructions.save();
+        await recipe.save();
+        this.router.transitionTo('recipes');
     }
 
     @action
@@ -152,10 +230,17 @@ export default class RecipesNewController extends Controller {
         this.recipeDescription = '';
         this.recipeCategory = '';
         this.recipeCuisine = '';
-        this.recipeDuration = '';
+        this.recipeDuration = {
+            years: 0, 
+            months: 0, 
+            days: 0, 
+            hours: 0, 
+            minutes: 0, 
+            seconds:0,
+        }
         this.recipeYield = '';
         this.recipeIngredients = ['', '', ''];
         this.recipeInstructions = ['', '', ''];
-        this.recipeDiets.forEach((diet) => this.recipeDiets[diet] = false);
+        Object.keys(this.recipeDiets).forEach((diet) => this.recipeDiets[diet] = false);
     }
 }
