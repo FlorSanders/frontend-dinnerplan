@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import {dasherize} from '@ember/string';
 import { tracked } from '@glimmer/tracking';
 
 export default class RecipesNewController extends Controller {
@@ -37,8 +38,10 @@ export default class RecipesNewController extends Controller {
         'vegan': false,
         'vegetarian': false,
     }
+    @tracked fileName = null;
     // Other variables
     confirmedLeave = false;
+    file;
 
     constructor() {
         super(...arguments);
@@ -78,6 +81,18 @@ export default class RecipesNewController extends Controller {
         let ingredientsEmpty = recipeIngredients.every((value) => (!value));
         let instructionsEmpty = recipeInstructions.every((value) => (!value));
         return simpleFieldsEmpty && durationEmpty && dietsEmpty && ingredientsEmpty && instructionsEmpty;
+    }
+
+    @action 
+    uploadFile(file) {
+        this.file = file;
+        this.fileName = file.blob.name;
+    }
+
+    @action
+    deleteFile() {
+        this.file = null;
+        this.fileName = '';
     }
 
     @action
@@ -203,6 +218,22 @@ export default class RecipesNewController extends Controller {
         });
         // Find the current user = creator of the recipe
         let user = this.store.peekRecord('user', this.session.userId);
+        // Upload the file
+        let file = this.file;
+        let storeFile = null;
+        if(!!file) {
+            let response = await file.upload('/files/');
+            // Verify the response is okay
+            if(response.status === 201) {
+                let id = response.body.data.id;
+                storeFile = await this.store.findRecord('file', id);
+                console.log(storeFile)
+            } else {
+                console.error("File upload failed");
+                window.alert("File upload failed")
+            }
+        }
+        console.log(storeFile);
         // Create the recipe object
         let ingredientsArray = [...this.recipeIngredients].filter((ingredient) => (ingredient !== ''));
         let checkedDiets = Object.keys(this.recipeDiets).filter((diet) => (this.recipeDiets[diet]));
@@ -216,11 +247,13 @@ export default class RecipesNewController extends Controller {
             ingredient: ingredientsArray,
             yield: this.recipeYield,
             diet: diet,
+            image: storeFile,
             creator: user,
             instructions: instructions,
         });
         await instructions.save();
         await recipe.save();
+        this.confirmedLeave = true;
         this.router.transitionTo('recipes');
     }
 
@@ -242,5 +275,6 @@ export default class RecipesNewController extends Controller {
         this.recipeIngredients = ['', '', ''];
         this.recipeInstructions = ['', '', ''];
         Object.keys(this.recipeDiets).forEach((diet) => this.recipeDiets[diet] = false);
+        this.deleteFile();
     }
 }

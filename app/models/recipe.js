@@ -9,6 +9,7 @@ export default class RecipeModel extends Model {
     @attr('json-list') ingredient;
     @attr('string') yield;
     @attr('schema-diet') diet;
+    @belongsTo('file') image;
     @belongsTo('user') creator;
     @belongsTo('instruction') instructions;
 }

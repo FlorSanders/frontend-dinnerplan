@@ -9,6 +9,23 @@
         </div>
 
         <div class="pb-5">
+            <FileUpload @name="files" @for="upload-file"
+                @class="p-2 lg:px-4 md:mx-2 text-green-700 text-centerborder border border-solid border-green-700 rounded hover:bg-green-700 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1"
+                @multiple={{false}} @accept="image/*" @onfileadd={{action this.uploadFile}}>
+                Upload Image
+            </FileUpload>
+
+            {{#if this.fileName}}
+            {{this.fileName}}
+            <BorderButton @clickFunction={{this.deleteFile}}>
+                <FaIcon @icon="times" />
+            </BorderButton>
+            {{/if}}
+        </div>
+
+
+
+        <div class="pb-5">
             <p class="text-xl text-green-800 pb-1">
                 Title
             </p>

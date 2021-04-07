@@ -23,7 +23,7 @@ export default class LoginController extends Controller {
     async login(){
         let result = await this.session.login({username: this.username, password: this.password});
         if(result){
-            this.router.transitionTo('home');
+            this.router.transitionTo('recipes');
         } else {
             console.warn("Unable to log in");
             alert("Please enter valid login details, or register.")
