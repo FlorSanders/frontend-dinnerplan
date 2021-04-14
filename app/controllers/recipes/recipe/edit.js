@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
-export default class RecipesNewController extends Controller {
+export default class RecipesRecipeEditController extends Controller {
     // Services
     @service store;
     @service session;
@@ -39,11 +39,14 @@ export default class RecipesNewController extends Controller {
     }
     @tracked fileName = null;
     // Other variables
-    confirmedLeave = false;
+    recipeId = null;
+    confirmedLeave = true;
+    newFile = false;
     file;
 
     constructor() {
         super(...arguments);
+
         // If the user leaves while there are unsaved changes, a warning should be given
         this.router.on('routeWillChange', (transition) => {
             // If we already confirmed, actually leave
@@ -60,8 +63,27 @@ export default class RecipesNewController extends Controller {
                     transition.abort();
                 }
             }
-            
         })
+    }
+
+    async setProperties(model) {
+        // Initialize the fields with model variables
+        var {title, description, category, cuisine, duration, ingredient, diet} = model.recipe;
+        this.recipeTitle = title;
+        this.recipeDescription = description;
+        this.recipeCategory = category;
+        this.recipeCuisine = cuisine;
+        this.recipeDuration = duration;
+        this.recipeYield = model.recipe.yield;
+        this.recipeIngredients = ingredient;
+        Object.keys(this.recipeDiets).forEach((recipeDiet) => {
+            this.recipeDiets[recipeDiet] = (diet === recipeDiet);
+        });
+        // Sketchy workaround: todo: fix this
+        this.recipeInstructions = model.instructions.step.map((instruction) => instruction.slice(3));
+        this.fileName = model.thumbnail.name;
+        this.file = await this.store.findRecord('file', model.thumbnail.id);
+        this.recipeId = model.recipe.id;
     }
 
     get diets() {
@@ -86,47 +108,58 @@ export default class RecipesNewController extends Controller {
     uploadFile(file) {
         this.file = file;
         this.fileName = file.blob.name;
+        this.newFile = true;
+        this.confirmedLeave = false;
     }
 
     @action
     deleteFile() {
         this.file = null;
         this.fileName = '';
+        this.newFile = false;
+        this.confirmedLeave = false;
     }
 
     @action
     updateRecipeTitle(e) {
         this.recipeTitle = e.target.value;
+        this.confirmedLeave = false;
     }
 
     @action
     updateRecipeDescription(e) {
         this.recipeDescription = e.target.value;
+        this.confirmedLeave = false;
     }
 
     @action
     updateRecipeCategory(e) {
         this.recipeCategory = e.target.value;
+        this.confirmedLeave = false;
     }
 
     @action
     updateRecipeCuisine(e) {
         this.recipeCuisine = e.target.value;
+        this.confirmedLeave = false;
     }
 
     @action
     updateRecipeDurationHours(e) {
         this.recipeDuration.hours = e.target.value;
+        this.confirmedLeave = false;
     }
 
     @action
     updateRecipeDurationMinutes(e) {
         this.recipeDuration.minutes = e.target.value;
+        this.confirmedLeave = false;
     }
 
     @action
     updateRecipeYield(e) {
         this.recipeYield = e.target.value;
+        this.confirmedLeave = false;
     }
 
     @action
@@ -134,12 +167,14 @@ export default class RecipesNewController extends Controller {
         let diet = e.target.value;
         let checked = e.target.checked;
         this.recipeDiets[diet] = checked;
+        this.confirmedLeave = false;
     }
 
     @action
     addRecipeIngredient() {
-        let ingredients = [...this.recipeIngredients, ''];
+        let ingredients = [...this.recipeIngredients, '']
         this.recipeIngredients = ingredients;
+        this.confirmedLeave = false;
     }
 
     @action
@@ -163,18 +198,21 @@ export default class RecipesNewController extends Controller {
         let ingredients = [...this.recipeIngredients];
         ingredients.splice(key, 1);
         this.recipeIngredients = ingredients;
+        this.confirmedLeave = false;
     }
 
     @action 
     updateRecipeIngredients(e) {
         let key = e.target.attributes.key.nodeValue;
         this.recipeIngredients[key] = e.target.value;
+        this.confirmedLeave = false;
     }
 
     @action
     addRecipeInstruction() {
-        let instructions = [...this.recipeInstructions, '']
+        let instructions = [...this.recipeInstructions, ''];
         this.recipeInstructions = instructions;
+        this.confirmedLeave = false;
     }
 
     @action
@@ -208,52 +246,54 @@ export default class RecipesNewController extends Controller {
 
     @action
     async save() {
+        // Check if the essential fields are valid
         if(this.isReset() || !this.recipeTitle) {
-            window.alert("Please fill in all the fields")
+            window.alert("Please fill in all the fields");
             return;
         }
-        // Create the instruction object
+        // Fetch the user, recipe and instructions
+        let recipe = await this.store.findRecord('recipe', this.recipeId);
+        let instructions = await recipe.instructions;
+        // Update the instructions record
         let instructionsArray = [...this.recipeInstructions].filter((instruction) => (instruction !== '')).map((instruction, index) => (`${index}. ${instruction}`))
-        let instructions = this.store.createRecord('instruction', {
-            step: instructionsArray,
-        });
-        // Find the current user = creator of the recipe
-        let user = this.store.peekRecord('user', this.session.userId);
-        // Upload the file
+        instructions.step = instructionsArray;
+        // Upload the file record
         let file = this.file;
         let storeFile = null;
         if(!!file) {
-            let response = await file.upload('/files/');
-            // Verify the response is okay
-            if(response.status === 201) {
-                let id = response.body.data.id;
-                storeFile = await this.store.findRecord('file', id);
-                console.log(storeFile)
+            if (this.newFile) {
+                // Upload the file
+                let response = await file.upload('/files/');
+                // Verify the response is okay
+                if(response.status === 201) {
+                    let id = response.body.data.id;
+                    storeFile = await this.store.findRecord('file', id);
+                } else {
+                    console.error("File upload failed");
+                    window.alert("File upload failed")
+                }
             } else {
-                console.error("File upload failed");
-                window.alert("File upload failed")
+                storeFile = file;
             }
         }
-        console.log(storeFile);
-        // Create the recipe object
+        // Update the recipe record
         let ingredientsArray = [...this.recipeIngredients].filter((ingredient) => (ingredient !== ''));
         let checkedDiets = Object.keys(this.recipeDiets).filter((diet) => (this.recipeDiets[diet]));
-        let diet = (!!checkedDiets.length) ? checkedDiets[0] : null;    // Unfortunately we can atm only add 1 diet as it is a property
-        let recipe = this.store.createRecord('recipe', {
-            title: this.recipeTitle,
-            description: this.recipeDescription,
-            duration: this.recipeDuration,
-            category: this.recipeCategory,
-            cuisine: this.recipeCuisine,
-            ingredient: ingredientsArray,
-            yield: this.recipeYield,
-            diet: diet,
-            image: storeFile,
-            creator: user,
-            instructions: instructions,
-        });
+        let diet = (!!checkedDiets.length) ? checkedDiets[0] : null;
+        recipe.title = this.recipeTitle;
+        recipe.description = this.recipeDescription;
+        recipe.duration = this.recipeDuration;
+        recipe.category = this.recipeCategory;
+        recipe.cuisine = this.recipeCuisine;
+        recipe.ingredient = ingredientsArray;
+        recipe.yield = this.recipeYield;
+        recipe.diet = diet;
+        recipe.image = storeFile;
+        recipe.instructions = instructions;
+        // Save the records
         await instructions.save();
         await recipe.save();
+        // Leave
         this.confirmedLeave = true;
         this.router.transitionTo('recipes');
     }

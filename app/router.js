@@ -11,7 +11,9 @@ Router.map(function () {
   this.route('home', { path: '/' });
   this.route('signup');
   this.route('recipes', function () {
-    this.route('recipe', { path: '/:id' });
+    this.route('recipe', { path: '/:id' }, function() {
+      this.route('edit');
+    });
     this.route('new');
   });
   this.route('account');
