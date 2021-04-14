@@ -1,7 +1,9 @@
 # frontend-dinnerplan
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+![image-20210414140920817](README.assets/banner.png)
+
+Example application I built to learn about the [Ember](https://emberjs.com/) frontend framework and [Semantic.works](https://semantic.works/) Linked Data microservices backend stack.
+A video fragment demoing the application in its current state can be found [here](https://youtu.be/Lw4gW4VTOWo).
 
 ## Prerequisites
 
@@ -10,17 +12,18 @@ You will need the following things properly installed on your computer.
 * [Git](https://git-scm.com/)
 * [Node.js](https://nodejs.org/) (with npm)
 * [Ember CLI](https://ember-cli.com/)
-* [Google Chrome](https://google.com/chrome/)
+* Web browser: [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/) or [Brave](https://brave.com/) are recommended
 
 ## Installation
 
-* `git clone <repository-url>` this repository
+* `git clone https://github.com/FlorSanders/frontend-dinnerplan.git`
 * `cd frontend-dinnerplan`
 * `npm install`
 
 ## Running / Development
 
-* `ember serve`
+* Start the [backend application](https://github.com/FlorSanders/app-dinnerplan).
+* `ember serve --proxy [address to backend]`
 * Visit your app at [http://localhost:4200](http://localhost:4200).
 * Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
 
