@@ -3,67 +3,67 @@
 <div class="flex flex-col items-center">
     <div class="container px-4 mx-auto w-full">
         {{#if this.isLoggedIn}}
-        <div class="pt-10 pb-5">
-            <h1 class="text-4xl font-bold text-green-700">
-                Logged in as {{this.session.name}} ({{this.session.nickname}})
-            </h1>
-        </div>
-        <div class="">
-            <button role="button"
-                class="p-2 lg:px-4 md:mx-2 text-red-700 text-centerborder border border-solid border-red-700 rounded hover:bg-red-700 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1"
-                {{ on "click" this.logout }}>
-                Logout
-            </button>
-        </div>
+            <div class="pt-10 pb-5">
+                <h1 class="text-4xl font-bold text-green-700">
+                    Logged in as {{this.session.name}} ({{this.session.nickname}})
+                </h1>
+            </div>
+            <div class="">
+                <button role="button"
+                    class="p-2 lg:px-4 md:mx-2 text-red-700 text-centerborder border border-solid border-red-700 rounded hover:bg-red-700 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1"
+                    {{ on "click" this.logout }}>
+                    Logout
+                </button>
+            </div>
         {{else}}
-        <div class="pt-10 pb-5">
-            <h1 class="text-4xl font-bold text-green-700">
-                Sign up
-            </h1>
-        </div>
+            <div class="pt-10 pb-5">
+                <h1 class="text-4xl font-bold text-green-700">
+                    Sign up
+                </h1>
+            </div>
 
-        <div class="grid grid-cols-2 gap-2 pb-5">
-            <div class="col-span-1 pr-10">
-                <p class="text-xl text-green-800 pb-1">
-                    Name
-                </p>
-                <input type="text" placeholder="name"
-                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.name}}
-                    {{on "input" this.updateName}}>
+            <div class="grid grid-cols-2 gap-2 pb-5">
+                <div class="col-span-1 pr-10">
+                    <p class="text-xl text-green-800 pb-1">
+                        Name
+                    </p>
+                    <input type="text" placeholder="name"
+                        class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.name}}
+                        {{on "input" this.updateName}}>
+                </div>
+                <div class="col-span-1 pr-10">
+                    <p class="text-xl text-green-800 pb-1">
+                        Username
+                    </p>
+                    <input type="text" placeholder="username"
+                        class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.username}}
+                        {{on "input" this.updateUsername}}>
+                </div>
+                <div class="col-span-1 pr-10">
+                    <p class="text-xl text-green-800 pb-1">
+                        Password
+                    </p>
+                    <input type="password" placeholder="password"
+                        class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.password}}
+                        {{on "input" this.updatePassword}}>
+                </div>
+                <div class="col-span-1 pr-10">
+                    <p class="text-xl text-green-800 pb-1">
+                        Confirm password
+                    </p>
+                    <input type="password" placeholder="confirm password"
+                        class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200"
+                        value={{this.confirmPassword}} {{on "input" this.updateConfirmPassword}}>
+                </div>
             </div>
-            <div class="col-span-1 pr-10">
-                <p class="text-xl text-green-800 pb-1">
-                    Username
-                </p>
-                <input type="text" placeholder="username"
-                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.username}}
-                    {{on "input" this.updateUsername}}>
-            </div>
-            <div class="col-span-1 pr-10">
-                <p class="text-xl text-green-800 pb-1">
-                    Password
-                </p>
-                <input type="password" placeholder="password"
-                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{this.password}}
-                    {{on "input" this.updatePassword}}>
-            </div>
-            <div class="col-span-1 pr-10">
-                <p class="text-xl text-green-800 pb-1">
-                    Confirm password
-                </p>
-                <input type="password" placeholder="confirm password"
-                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200"
-                    value={{this.confirmPassword}} {{on "input" this.updateConfirmPassword}}>
-            </div>
-        </div>
 
-        <div class="">
-            <button role="button"
-                class="p-2 lg:px-4 md:mx-2 text-green-700 text-centerborder border border-solid border-green-700 rounded hover:bg-green-700 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1"
-                {{ on "click" this.signup }}>
-                Submit
-            </button>
-        </div>
+            <div class="">
+                <button role="button"
+                    class="p-2 lg:px-4 md:mx-2 text-green-700 text-centerborder border border-solid border-green-700 rounded hover:bg-green-700 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1"
+                    {{ on "click" this.signup }}>
+                    Submit
+                </button>
+            </div>
         {{/if}}
     </div>
 </div>

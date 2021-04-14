@@ -12,32 +12,32 @@
                 </button> --}}
             </div>
             {{#if this.loggedIn}}
-            <div class="flex flex-row ml-auto mt-0" id="navbar-collapse">
-                <button role="button"
-                    class="text-green-800 w-10 h-10 border border-solid border-green-800 rounded-full hover:bg-green-800 hover:text-white transition-colors duration-300"
-                    {{ on "click" this.toggleMenu }}>
-                    {{this.avatar}}
-                </button>
-                <div class="{{if this.menuOpen "" " hidden"}} absolute right-0 top-20 z-20 bg-white flex flex-col
-                    align-center px-24">
-                    <LinkTo @route="account" class="text-green-800">
-                        Account
-                    </LinkTo>
-                    <button class="text-green-800 hover:text-green-700" {{on "click" this.logout }}>
-                        Log out
+                <div class="flex flex-row ml-auto mt-0" id="navbar-collapse">
+                    <button role="button"
+                        class="text-green-800 w-10 h-10 border border-solid border-green-800 rounded-full hover:bg-green-800 hover:text-white transition-colors duration-300"
+                        {{ on "click" this.toggleMenu }}>
+                        {{this.avatar}}
                     </button>
+                    <div class="{{if this.menuOpen "" " hidden"}} absolute right-0 top-20 z-20 bg-white flex flex-col
+                        align-center px-24">
+                        <LinkTo @route="account" class="text-green-800">
+                            Account
+                        </LinkTo>
+                        <button class="text-green-800 hover:text-green-700" {{on "click" this.logout }}>
+                            Log out
+                        </button>
+                    </div>
                 </div>
-            </div>
 
             {{else}}
-            <div class="flex flex-row ml-auto mt-0" id="navbar-collapse">
-                <Button @link={{true}} @route="login">
-                    Log in
-                </Button>
-                <BorderButton @link={{true}} @route="signup">
-                    Sign up
-                </BorderButton>
-            </div>
+                <div class="flex flex-row ml-auto mt-0" id="navbar-collapse">
+                    <Button @link={{true}} @route="login">
+                        Log in
+                    </Button>
+                    <BorderButton @link={{true}} @route="signup">
+                        Sign up
+                    </BorderButton>
+                </div>
             {{/if}}
         </div>
     </nav>

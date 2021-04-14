@@ -16,10 +16,10 @@
             </FileUpload>
 
             {{#if this.fileName}}
-            {{this.fileName}}
-            <BorderButton @clickFunction={{this.deleteFile}}>
-                <FaIcon @icon="times" />
-            </BorderButton>
+                {{this.fileName}}
+                <BorderButton @clickFunction={{this.deleteFile}}>
+                    <FaIcon @icon="times" />
+                </BorderButton>
             {{/if}}
         </div>
 
@@ -98,10 +98,10 @@
             </p>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 pb-5">
                 {{#each this.diets as |diet| }}
-                <div class="col-span-1 pr-10">
-                    <input type="checkbox" id={{diet.name}} value={{diet.name}} checked={{diet.checked}} {{on "click"
-                        this.updateRecipeDiet}}> {{diet.name}}
-                </div>
+                    <div class="col-span-1 pr-10">
+                        <input type="checkbox" id={{diet.name}} value={{diet.name}} checked={{diet.checked}}
+                            {{on "click" this.updateRecipeDiet}}> {{diet.name}}
+                    </div>
                 {{/each}}
             </div>
         </div>
@@ -114,17 +114,17 @@
                 </BorderButton>
             </p>
             {{#each this.recipeIngredients as |ingredient index| }}
-            <div class="flex flex-row align-center justify-between pb-1">
-                <input type="text" placeholder="ingredient {{index}}" key={{index}}
-                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{ingredient}}
-                    {{on "input" this.updateRecipeIngredients}}>
-                <div key={{index}}>
-                    <BorderButton @clickFunction={{this.removeRecipeIngredient }}>
-                        <FaIcon @icon="minus" />
-                    </BorderButton>
-                </div>
+                <div class="flex flex-row align-center justify-between pb-1">
+                    <input type="text" placeholder="ingredient {{index}}" key={{index}}
+                        class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{ingredient}}
+                        {{on "input" this.updateRecipeIngredients}}>
+                    <div key={{index}}>
+                        <BorderButton @clickFunction={{this.removeRecipeIngredient }}>
+                            <FaIcon @icon="minus" />
+                        </BorderButton>
+                    </div>
 
-            </div>
+                </div>
             {{/each}}
         </div>
 
@@ -136,17 +136,17 @@
                 </BorderButton>
             </p>
             {{#each this.recipeInstructions as |instruction index| }}
-            <div class="flex flex-row align-center justify-between pb-1">
-                <input type="text" placeholder="step {{index}}" key={{index}}
-                    class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{instruction}}
-                    {{on "input" this.updateRecipeInstructions}}>
-                <div key={{index}}>
-                    <BorderButton @clickFunction={{this.removeRecipeInstruction }}>
-                        <FaIcon @icon="minus" />
-                    </BorderButton>
-                </div>
+                <div class="flex flex-row align-center justify-between pb-1">
+                    <input type="text" placeholder="step {{index}}" key={{index}}
+                        class="border-2 w-full border-solid rounded px-4 py-2 border-gray-200" value={{instruction}}
+                        {{on "input" this.updateRecipeInstructions}}>
+                    <div key={{index}}>
+                        <BorderButton @clickFunction={{this.removeRecipeInstruction }}>
+                            <FaIcon @icon="minus" />
+                        </BorderButton>
+                    </div>
 
-            </div>
+                </div>
             {{/each}}
         </div>
 
